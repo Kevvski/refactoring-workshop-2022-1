@@ -111,7 +111,7 @@ void Controller::handleTimeoutInd(std::unique_ptr<Event>& e)
     }
 
     if (not lost) {
-         if (std::make_pair(newHead.x, newHead.y) == m_foodPosition) {
+        if (std::make_pair(newHead.x, newHead.y) == m_foodPosition) {
             m_scorePort.send(std::make_unique<EventT<ScoreInd>>());
             m_foodPort.send(std::make_unique<EventT<FoodReq>>());
         } else if (newHead.x < 0 or newHead.y < 0 or
@@ -134,20 +134,7 @@ void Controller::handleTimeoutInd(std::unique_ptr<Event>& e)
     }
 
     if (not lost) {
-        m_segments.push_front(newHead);
-        DisplayInd placeNewHead;
-        placeNewHead.x = newHead.x;
-        placeNewHead.y = newHead.y;
-        placeNewHead.value = Cell_SNAKE;
-
-        m_displayPort.send(std::make_unique<EventT<DisplayInd>>(placeNewHead));
-
-        m_segments.erase(
-            std::remove_if(
-                m_segments.begin(),
-                m_segments.end(),
-                [](auto const& segment){ return not (segment.ttl > 0); }),
-            m_segments.end());
+        replaceSnake(newHead);
     }
 }
 
@@ -207,6 +194,25 @@ void Controller::handleFoodReq(std::unique_ptr<Event>& e)
     }
 
     m_foodPosition = std::make_pair(requestedFood.x, requestedFood.y);
+}
+
+
+void Controller::replaceSnake(Segment newHead)
+{
+    m_segments.push_front(newHead);
+        DisplayInd placeNewHead;
+        placeNewHead.x = newHead.x;
+        placeNewHead.y = newHead.y;
+        placeNewHead.value = Cell_SNAKE;
+
+        m_displayPort.send(std::make_unique<EventT<DisplayInd>>(placeNewHead));
+
+        m_segments.erase(
+            std::remove_if(
+                m_segments.begin(),
+                m_segments.end(),
+                [](auto const& segment){ return not (segment.ttl > 0); }),
+            m_segments.end());
 }
 
 } // namespace Snake
