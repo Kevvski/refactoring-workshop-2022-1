@@ -51,7 +51,8 @@ private:
     std::list<Segment> m_segments;
 
 private:
-    void handleTimeoutInd(std::unique_ptr<Event> e);
+    void handleTimeoutInd(std::unique_ptr<Event>& e);
+    void handleFoodInd(std::unique_ptr<Event>& e);
 };
 
 } // namespace Snake
