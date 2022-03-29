@@ -49,6 +49,9 @@ private:
 
     Direction m_currentDirection;
     std::list<Segment> m_segments;
+
+private:
+    void handleTimeoutInd(std::unique_ptr<Event> e);
 };
 
 } // namespace Snake
