@@ -53,6 +53,7 @@ private:
 private:
     void handleTimeoutInd(std::unique_ptr<Event>& e);
     void handleFoodInd(std::unique_ptr<Event>& e);
+    void handleFoodReq(std::unique_ptr<Event>& e);
 };
 
 } // namespace Snake
