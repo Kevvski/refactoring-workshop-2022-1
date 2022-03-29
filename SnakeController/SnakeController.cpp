@@ -77,7 +77,7 @@ void Controller::receive(std::unique_ptr<Event> e)
 
         bool lost = false;
 
-        for (auto segment : m_segments) {
+        for (const auto& segment : m_segments) {
             if (segment.x == newHead.x and segment.y == newHead.y) {
                 m_scorePort.send(std::make_unique<EventT<LooseInd>>());
                 lost = true;
